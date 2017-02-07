@@ -3,13 +3,16 @@ package com.txcsmad.androidadvanced.lesson1;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.AttributeSet;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -60,18 +63,6 @@ public class AnagramActivity extends AppCompatActivity {
         editText.setImeOptions(EditorInfo.IME_ACTION_GO);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_anagrams, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return item.getItemId() == R.id.action_settings || super.onOptionsItemSelected(item);
-    }
-
     // endregion
 
     // region View Interaction
@@ -85,7 +76,6 @@ public class AnagramActivity extends AppCompatActivity {
             gameStatus.setText(Html.fromHtml(String.format(START_MESSAGE, currentWord.toUpperCase(), currentWord)));
 
             fab.setImageResource(android.R.drawable.ic_menu_help);
-            fab.hide();
 
             resultView.setText("");
             editText.setText("");
@@ -122,7 +112,8 @@ public class AnagramActivity extends AppCompatActivity {
         String word = editText.getText().toString().trim().toLowerCase();
 
         if (word.length() == 0) {
-            return; // FIXME
+            Snackbar.make(fab, "Word was empty.", BaseTransientBottomBar.LENGTH_SHORT).show();
+            return;
         }
 
         String color;
