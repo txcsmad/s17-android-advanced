@@ -29,7 +29,8 @@ import butterknife.OnEditorAction;
 
 public class AnagramActivity extends AppCompatActivity {
 
-    private static final String START_MESSAGE = "Find as many words as possible that can be formed by adding one letter to <big>%s</big> (but that do not contain the substring %s).";
+    private static final String START_MESSAGE = "Find as many words as possible that can be formed " +
+            "by adding one letter to <big>%s</big> (but that do not contain the substring %s).";
     private static final String HEX_COLOR_BAD = "#cc0029";
     private static final String HEX_COLOR_GOOD = "#00aa29";
 
@@ -115,6 +116,8 @@ public class AnagramActivity extends AppCompatActivity {
 
     // endregion
 
+    // region Helper
+
     private void processWord(EditText editText) {
         String word = editText.getText().toString().trim().toLowerCase();
 
@@ -136,9 +139,6 @@ public class AnagramActivity extends AppCompatActivity {
 
         fab.show();
     }
-
-
-    // region Helper
 
     private void loadWords() {
         AssetManager assetManager = getAssets();
