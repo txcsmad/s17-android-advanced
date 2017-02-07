@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Android Advanced</string>
+    <string name="prompt_anagram_start">Press \'play\' to get started.</string>
 </resources>

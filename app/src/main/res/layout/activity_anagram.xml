@@ -18,6 +18,4 @@
         android:nestedScrollingEnabled="false"
         android:src="@android:drawable/ic_media_play"/>
 
-
-
 </android.support.design.widget.CoordinatorLayout>
