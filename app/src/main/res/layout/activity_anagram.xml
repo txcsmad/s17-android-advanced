@@ -18,6 +18,6 @@
         android:layout_margin="@dimen/fab_margin"
         android:nestedScrollingEnabled="false"
         android:src="@android:drawable/ic_media_play"
-        app:layout_behavior="com.txcsmad.androidadvanced.lesson1.CustomFABBehavior"/>
+        app:layout_behavior=".lesson1.CustomFABBehavior"/>
 
 </android.support.design.widget.CoordinatorLayout>
