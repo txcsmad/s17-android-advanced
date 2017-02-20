@@ -8,6 +8,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity android:name=".MainActivity"/>
+
         <activity android:name=".lesson1.AnagramActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -15,8 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
-        </activity>
+
+        <activity android:name=".lesson2.GhostActivity"/>
     </application>
 
 </manifest>
