@@ -10,8 +10,9 @@
         android:id="@+id/img_game_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:src="@mipmap/ic_launcher"
-        android:layout_centerVertical="true"/>
+        android:transitionName="img_game_icon"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,14 +27,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/placeholder"
-            android:textAppearance="?textAppearanceListItem"/>
+            android:textAppearance="?textAppearanceListItem"
+            android:transitionName="tv_game_title"/>
 
         <TextView
             android:id="@+id/tv_game_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/placeholder"
-            android:textAppearance="?textAppearanceListItemSmall"/>
+            android:textAppearance="?textAppearanceListItemSmall"
+            android:transitionName="tv_game_desc"/>
 
     </LinearLayout>
 

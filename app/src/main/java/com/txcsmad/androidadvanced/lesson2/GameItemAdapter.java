@@ -1,7 +1,12 @@
 package com.txcsmad.androidadvanced.lesson2;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,12 +53,30 @@ public class GameItemAdapter extends RecyclerView.Adapter<GameItemAdapter.GameIt
         Class intentClass = gameItems.get(position).intentClass;
         final Intent launchIntent = new Intent(holder.itemView.getContext(), intentClass);
 
-        holder.itemView.setOnClickListener(v -> v.getContext().startActivity(launchIntent));
+        transitionActivity(holder, launchIntent);
     }
 
     @Override
     public int getItemCount() {
         return gameItems.size();
+    }
+
+    void transitionActivity(GameItemHolder holder, Intent intent) {
+        ActivityOptions options;
+        Context vContext = holder.itemView.getContext();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && vContext instanceof Activity) {
+            options = ActivityOptions.makeSceneTransitionAnimation(
+                    (Activity) holder.itemView.getContext(),
+                    Pair.create(holder.iconView, "img_game_icon"),
+                    Pair.create(holder.titleView, "tv_game_title"),
+                    Pair.create(holder.descView, "tv_game_desc")
+            );
+
+            holder.itemView.setOnClickListener(v -> vContext.startActivity(intent, options.toBundle()));
+        } else {
+            holder.itemView.setOnClickListener(v -> vContext.startActivity(intent));
+        }
     }
 
     static class GameItemHolder extends RecyclerView.ViewHolder {
