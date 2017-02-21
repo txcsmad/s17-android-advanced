@@ -1,5 +1,6 @@
 package com.txcsmad.androidadvanced.lesson2;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,11 +39,16 @@ public class GameItemAdapter extends RecyclerView.Adapter<GameItemAdapter.GameIt
 
     @Override
     public void onBindViewHolder(GameItemHolder holder, int position) {
-
         GameItem curItem = gameItems.get(position);
 
-        // TODO: Bind field values to views.
+        holder.iconView.setImageResource(curItem.iconRes);
+        holder.titleView.setText(curItem.title);
+        holder.descView.setText(curItem.desc);
 
+        Class intentClass = gameItems.get(position).intentClass;
+        final Intent launchIntent = new Intent(holder.itemView.getContext(), intentClass);
+
+        holder.itemView.setOnClickListener(v -> v.getContext().startActivity(launchIntent));
     }
 
     @Override
