@@ -17,20 +17,31 @@ package com.txcsmad.androidadvanced.lesson2;
 
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.txcsmad.androidadvanced.GameHomeActivity;
 import com.txcsmad.androidadvanced.R;
 import com.txcsmad.androidadvanced.lesson2.applied.GhostDictionary;
 import com.txcsmad.androidadvanced.lesson2.applied.SimpleDictionary;
+import com.txcsmad.androidadvanced.model.GameItem;
 
 import java.io.IOException;
 import java.util.Random;
 
+import butterknife.BindView;
 
-public class GhostActivity extends AppCompatActivity {
+
+public class GhostActivity extends GameHomeActivity {
+
+    public static final GameItem GHOST_ITEM =
+            new GameItem(android.R.drawable.ic_dialog_alert,
+                    "Ghost",
+                    "Ghost is pretty neat.",
+                    GhostActivity.class);
+
     private static final String FILE_NAME = "words.txt";
     private static final String COMPUTER_TURN = "Computer's turn";
     private static final String USER_TURN = "Your turn";
@@ -39,18 +50,22 @@ public class GhostActivity extends AppCompatActivity {
     private boolean userTurn = false;
     private Random random = new Random();
 
+    @BindView(R.id.tv_ghost) TextView textView;
+    @BindView(R.id.game_status) TextView statusTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ghost);
+
+        loadWords();
+    }
+
+    private void loadWords() {
         AssetManager assetManager = getAssets();
         try {
             dictionary = new SimpleDictionary(assetManager.open(FILE_NAME));
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if(dictionary == null) {
             Toast.makeText(this, "Error loading dictionary.", Toast.LENGTH_SHORT).show();
         }
     }
@@ -63,23 +78,20 @@ public class GhostActivity extends AppCompatActivity {
      */
     public boolean resetGame() {
         userTurn = random.nextBoolean();
-        TextView text = (TextView) findViewById(R.id.tv_ghost);
-        text.setText("");
-        TextView label = (TextView) findViewById(R.id.gameStatus);
+        textView.setText("");
         if (userTurn) {
-            label.setText(USER_TURN);
+            statusTextView.setText(USER_TURN);
         } else {
-            label.setText(COMPUTER_TURN);
+            statusTextView.setText(COMPUTER_TURN);
             computerTurn();
         }
         return true;
     }
 
     private void computerTurn() {
-        TextView label = (TextView) findViewById(R.id.gameStatus);
         // Do computer turn stuff then make it the user's turn again
         userTurn = true;
-        label.setText(USER_TURN);
+        statusTextView.setText(USER_TURN);
     }
 
     /**
@@ -97,5 +109,11 @@ public class GhostActivity extends AppCompatActivity {
          **
          **/
         return super.onKeyUp(keyCode, event);
+    }
+
+    @NonNull
+    @Override
+    public GameItem getItem() {
+        return GHOST_ITEM;
     }
 }

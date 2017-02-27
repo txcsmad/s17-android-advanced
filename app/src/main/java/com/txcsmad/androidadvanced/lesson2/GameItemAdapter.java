@@ -1,12 +1,10 @@
 package com.txcsmad.androidadvanced.lesson2;
 
 import android.app.Activity;
-import android.app.ActivityOptions;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +26,15 @@ import butterknife.ButterKnife;
 
 public class GameItemAdapter extends RecyclerView.Adapter<GameItemAdapter.GameItemHolder> {
 
+    private static final String TRANSITION_NAME_ICON = "img_game_icon";
+    private static final String TRANSITION_NAME_TITLE = "tv_game_title";
+    private static final String TRANSITION_NAME_DESC = "tv_game_desc";
+
+    private Activity context;
     private final List<GameItem> gameItems;
 
-    public GameItemAdapter(List<GameItem> gameItems) {
+    public GameItemAdapter(Activity context, List<GameItem> gameItems) {
+        this.context = context;
         this.gameItems = gameItems;
     }
 
@@ -42,6 +46,7 @@ public class GameItemAdapter extends RecyclerView.Adapter<GameItemAdapter.GameIt
         return new GameItemHolder(gameLayout);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onBindViewHolder(GameItemHolder holder, int position) {
         GameItem curItem = gameItems.get(position);
@@ -50,33 +55,22 @@ public class GameItemAdapter extends RecyclerView.Adapter<GameItemAdapter.GameIt
         holder.titleView.setText(curItem.title);
         holder.descView.setText(curItem.desc);
 
-        Class intentClass = gameItems.get(position).intentClass;
-        final Intent launchIntent = new Intent(holder.itemView.getContext(), intentClass);
+        holder.itemView.setOnClickListener(v -> {
+            Pair<View, String> pair1 = Pair.create(holder.iconView, TRANSITION_NAME_ICON);
+            Pair<View, String> pair2 = Pair.create(holder.titleView, TRANSITION_NAME_TITLE);
+            Pair<View, String> pair3 = Pair.create(holder.descView, TRANSITION_NAME_DESC);
 
-        transitionActivity(holder, launchIntent);
+            Intent intent = new Intent(context, curItem.intentClass);
+            ActivityOptionsCompat options =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(context, pair1, pair2, pair3);
+
+            context.startActivity(intent, options.toBundle());
+        });
     }
 
     @Override
     public int getItemCount() {
         return gameItems.size();
-    }
-
-    void transitionActivity(GameItemHolder holder, Intent intent) {
-        ActivityOptions options;
-        Context vContext = holder.itemView.getContext();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && vContext instanceof Activity) {
-            options = ActivityOptions.makeSceneTransitionAnimation(
-                    (Activity) holder.itemView.getContext(),
-                    Pair.create(holder.iconView, "img_game_icon"),
-                    Pair.create(holder.titleView, "tv_game_title"),
-                    Pair.create(holder.descView, "tv_game_desc")
-            );
-
-            holder.itemView.setOnClickListener(v -> vContext.startActivity(intent, options.toBundle()));
-        } else {
-            holder.itemView.setOnClickListener(v -> vContext.startActivity(intent));
-        }
     }
 
     static class GameItemHolder extends RecyclerView.ViewHolder {

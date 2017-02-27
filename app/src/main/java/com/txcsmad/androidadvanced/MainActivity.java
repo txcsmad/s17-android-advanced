@@ -1,7 +1,5 @@
 package com.txcsmad.androidadvanced;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,10 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnItemClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private List<GameItem> gameItems;
     private GameItemAdapter itemAdapter;
@@ -30,35 +26,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ButterKnife.bind(this);
-
         setupGameItems();
     }
 
     private void setupGameItems() {
         // Create items
-
         gameItems = new ArrayList<>();
-        gameItems.add(
-                new GameItem(android.R.drawable.ic_input_add,
-                        "Anagram",
-                        "Check anagrams, woo!",
-                        AnagramActivity.class)
-        );
-        gameItems.add(
-                new GameItem(android.R.drawable.ic_dialog_alert,
-                        "Ghost",
-                        "Ghost is pretty neat.",
-                        GhostActivity.class)
-        );
-
-        itemAdapter = new GameItemAdapter(gameItems);
-
+        gameItems.add(AnagramActivity.ANAGRAM_ITEM);
+        gameItems.add(GhostActivity.GHOST_ITEM);
+        itemAdapter = new GameItemAdapter(this, gameItems);
 
         // Finish setup
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-
         gamesRecyclerView.setLayoutManager(linearLayoutManager);
         gamesRecyclerView.setAdapter(itemAdapter);
     }

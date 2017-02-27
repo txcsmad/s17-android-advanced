@@ -3,6 +3,7 @@ package com.txcsmad.androidadvanced.lesson1;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -16,10 +17,13 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.txcsmad.androidadvanced.GameHomeActivity;
 import com.txcsmad.androidadvanced.R;
+import com.txcsmad.androidadvanced.model.GameItem;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,7 +34,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 
-public class AnagramActivity extends AppCompatActivity {
+public class AnagramActivity extends GameHomeActivity {
+
+    public static final GameItem ANAGRAM_ITEM =
+            new GameItem(android.R.drawable.ic_input_add,
+                    "Anagram",
+                    "Check anagrams, woo!",
+                    AnagramActivity.class);
 
     private static final String START_MESSAGE = "Find as many words as possible that can be formed " +
             "by adding one letter to <big>%s</big> (but that do not contain the substring %s).";
@@ -53,8 +63,6 @@ public class AnagramActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anagram);
-
-        ButterKnife.bind(this);
 
         loadWords();
 
@@ -140,6 +148,12 @@ public class AnagramActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(this, "Could not load dictionary", Toast.LENGTH_LONG);
             toast.show();
         }
+    }
+
+    @NonNull
+    @Override
+    public GameItem getItem() {
+        return ANAGRAM_ITEM;
     }
 
     // endregion
